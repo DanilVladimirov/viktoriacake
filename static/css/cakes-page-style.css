@@ -1,0 +1,70 @@
+.cake-card {
+    background: white;
+    border: 3px solid #cd95cf;
+    color: white;
+    padding: 15px;
+    width: 200px;
+    margin: 10px 0px 10px 10px;
+}
+
+.img-side {
+    overflow: hidden;
+    border: 3px solid #cd95cf;
+    height: 250px;
+}
+
+.img-side img {
+    width: 200px;
+    height: 250px;
+    object-fit: cover;
+}
+
+.cake-title {
+    text-align: center;
+    font-weight: bold;
+}
+
+.cake-title a {
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.cake-price {
+    text-align: center;
+}
+
+.cake-price span {
+    color: #7319bf;
+    font-size: 20px;
+}
+
+.cake-cart {
+    float: right;
+    margin-top: 5px;
+    background-color: #cd95cf;
+    border: 2px solid #cd95cf;
+    color: white;
+    padding: 8px;
+    font-size: 15px;
+    min-width: 100px;
+}
+
+.cake-cart:hover {
+    background-color: #a478a5;
+    border: 2px solid #a478a5;
+}
+
+.cake-like {
+    margin-top: 5px;
+    background-color: #cd95cf;
+    border: 2px solid #cd95cf;
+    color: white;
+    padding: 8px;
+    font-size: 15px;
+    width: 50px;
+}
+
+.cake-like:hover {
+    background-color: #a478a5;
+    border: 2px solid #a478a5;
+}

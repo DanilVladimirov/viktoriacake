@@ -1,0 +1,14 @@
+{% extends 'template.html' %}
+{% block body %}
+    <div style="text-align: center">
+        <form method="post" action="" style="display: inline-grid;">
+            {% csrf_token %}
+            <input style="width: 300px;height: 40px;margin-bottom: 10px;" type="text" placeholder="Ім'я" name="name" required>
+            <input style="width: 300px;height: 40px;margin-bottom: 10px;" type="text" placeholder="Призвіще" name="surname" required>
+            <input style="width: 300px;height: 40px;margin-bottom: 10px;" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="050-123-4567" name="telephone" required>
+            <input style="width: 300px;height: 40px;margin-bottom: 10px;" type="text" placeholder="Адресса" name="address" required>
+            <textarea style="width: 300px;height: 40px;margin-bottom: 10px;" name="comment" placeholder="Побажання до замовлення"></textarea>
+            <button type="submit" name="action" value="create_order">Оформити</button>
+        </form>
+    </div>
+{% endblock %}

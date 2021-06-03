@@ -1,0 +1,43 @@
+{% extends 'template.html' %}
+
+{% block body %}
+    <form method="post" action="" style="display: inline-grid;">
+        {% csrf_token %}
+        Бисквит:
+        <select name="biscuit">
+            <option>Виберіть</option>
+            {% for biscuit in biscuits %}
+                <option value="{{ biscuit.id }}">{{ biscuit.name }}({{ biscuit.cost }}грн/{{ biscuit.weight }}гр)</option>
+            {% endfor %}
+        </select>
+        Крем:
+        <select name="cream">
+            <option>Виберіть</option>
+            {% for cream in creams %}
+                <option value="{{ cream.id }}">{{ cream.name }}({{ cream.cost }}грн/{{ cream.weight }}гр)</option>
+            {% endfor %}
+        </select>
+        Начинка:
+        <select name="filling">
+            <option>Виберіть</option>
+            {% for fill in fillings %}
+                <option value="{{ fill.id }}">{{ fill.name }}({{ fill.cost }}грн/{{ fill.weight }}гр)</option>
+            {% endfor %}
+        </select>
+        Декор:
+        <select name="decor">
+            <option>Виберіть</option>
+            {% for decor in decors %}
+                <option value="{{ decor.id }}">{{ decor.name }}({{ decor.cost }}грн)</option>
+            {% endfor %}
+        </select>
+        Діаметр:
+        <select name="diameter">
+            <option>Виберіть</option>
+            {% for diameter in diameters %}
+                <option value="{{ diameter.id }}">{{ diameter.diameter }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">submit</button>
+    </form>
+{% endblock %}

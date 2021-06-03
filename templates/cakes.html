@@ -1,0 +1,52 @@
+{% extends 'template.html' %}
+{% block head %}
+    <link rel="stylesheet" href="/static/css/cakes-page-style.css">
+{% endblock %}
+{% block body %}
+    <div style="display: flex;">
+        {% for cake in cakes %}
+            <div class="cake-card">
+                <div class="img-side">
+                    <img src="{{ cake.img.url }}">
+                </div>
+                <div class="cake-title"><a href="{% url 'cake_details' cake.id %}">{{ cake.name }}</a>
+                </div>
+                <div class="cake-price"><span>{{ cake.cost }} грн</span></div>
+                {#            Бісквіт:{{ cake.biscuit.name }}<br>#}
+                {#            <hr>#}
+                {#            Начинка:{{ cake.filling.name }}<br>#}
+                {#            <hr>#}
+                {#            Крем:{{ cake.cream.name }}#}
+
+                {#                <input type="hidden" name="cake_id" value="{{ cake.id }}">#}
+                {% load tags %}
+                <button onclick="add_cart({{ cake.id }})" class="cake-cart" id="button_add_{{ cake.id }}">
+                    {% if request|is_in_cart:cake.id %}
+                        В кошику !
+                        {% else %}
+                        В кошик
+                    {% endif %}
+                </button>
+                <button name="action" value="add_cart" class="cake-like">♥</button>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        function add_cart(cakeid) {
+            $.ajax({
+                type: 'POST', url: '{% url "addcart" %}',
+                data: {'csrfmiddlewaretoken': csrf_token, 'cakeid': cakeid},
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data.success) {
+                        var id_btn = '#button_add_' + cakeid;
+                        $(id_btn).text('В кошику !');
+                    } else {
+
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}

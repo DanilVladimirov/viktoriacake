@@ -1,0 +1,47 @@
+{% extends 'template.html' %}
+{% block body %}
+    <div style="display: grid;">
+        {% for order in orders %}
+            <div style="background: blueviolet;
+                    color: white;
+                    padding: 10px;
+                    border-radius: 10px;
+                    margin:10px 0px 10px 10px;
+                    ">
+                <div style="font-size: 20px;">замовлення #{{ order.id }}</div>
+                <div style="display: flex;flex-wrap: wrap;">
+                    <div style="background-color: white; color: black;border-radius: 10px;padding: 10px;">
+                        Ім'я: {{ order.name }}<br>
+                        <hr>
+                        Призвіще: {{ order.surname }}<br>
+                        <hr>
+                        Номер:{{ order.telephone }}<br>
+                        <hr>
+                    </div>
+                    {% for cake in order.cakes.all %}
+                        <div style="background-color: white; color: black;border-radius: 10px;padding: 10px;margin-left: 10px;">
+                            Назва: {{ cake.name }}<br>
+                            <hr>
+                            Бісквіт:{{ cake.biscuit.name }}<br>
+                            <hr>
+                            Начинка:{{ cake.filling.name }}<br>
+                            <hr>
+                            Крем:{{ cake.cream.name }}<br>
+                            <hr>
+                            Діаметер:{{ cake.diameter.diameter }}<br>
+                            <hr>
+                            Вага:{{ cake.weight }}
+
+                        </div>
+                    {% endfor %}
+                </div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                    <button name="action" value="ready" style="float:right;margin-top:5px;">Готовий</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

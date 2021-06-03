@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>var csrf_token = $('{% csrf_token %}').val(); </script>
+    <style>
+        body {
+            margin: 0;
+            background: url("/static/imgs/fon.png");
+            background-size: cover;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f8b2fb;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: #7319bf;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        li a:hover:not(.active) {
+            background-color: #c78dc9;
+        }
+
+        li:hover {
+            background-color: #c78dc9;
+        }
+
+        .active {
+            background-color: #4CAF50;
+        }
+
+        .with_img {
+            float: right;
+            width: 50px;
+            height: 51px;
+            text-align: center;
+        }
+    </style>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+<div style="background-color: #f8b2fb;display: flex;padding-top: 10px;">
+    <div style="width: 20%;"></div>
+    <div style="width: 80%;font-size: 40px;color: white;text-align: center;"><span>Viktoriia Cake</span></div>
+    <div style="width: 20%;display: grid;text-align: end;padding-right: 10px;color: #7319bf;">
+        <span>Звязатись з нами:</span>
+        <span>050 504 42 32</span>
+        <span>043 646 13 54</span>
+    </div>
+</div>
+<ul>
+    <li><a href="{% url 'cakes' %}">Торти</a></li>
+    <li><a href="{% url 'create_cake' %}">Конструктор</a></li>
+    <li class="with_img">
+        <img style="width: 40px;margin-top: 5px;" src="/static/imgs/user-cake.png">
+    </li>
+    <li class="with_img" onclick="location.href='{% url 'cart_page' %}'">
+        <img style="width: 40px;margin-top: 5px;" src="/static/imgs/cart-cake.png">
+    </li>
+</ul>
+{% block body %}
+
+{% endblock %}
+</body>
+</html>

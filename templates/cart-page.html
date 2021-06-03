@@ -1,0 +1,59 @@
+{% extends 'template.html' %}
+
+{% block body %}
+    <div style="display: flex;">
+        {% for cake in cakes %}
+            <div style="background: blueviolet;
+                    color: white;
+                    padding: 10px;
+                    width: 200px;
+                    border-radius: 10px;
+                    margin:10px 0px 10px 10px;">
+                Торт:{{ cake.name }}<br>
+                <hr>
+                Бісквіт:{{ cake.biscuit.name }}<br>
+                <hr>
+                Начинка:{{ cake.filling.name }}<br>
+                <hr>
+                Крем:{{ cake.cream.name }}
+                <hr>
+                Ціна:{{ cake.price }}<br>
+                <hr>
+                Вага:{{ cake.total_weight }}
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="cake_id" value="{{ cake.id }}">
+                    <button name="action" value="remove" style="float:right;margin-top:5px;">видалити</button>
+                </form>
+            </div>
+        {% endfor %}
+        {% for cake in handmade %}
+            <div style="background: blueviolet;
+                    color: white;
+                    padding: 10px;
+                    width: 200px;
+                    border-radius: 10px;
+                    margin:10px 0px 10px 10px;">
+                торт handmade<br>
+                <hr>
+                Бісквіт:{{ cake.bisc.name }}<br>
+                <hr>
+                Начинка:{{ cake.filling.name }}<br>
+                <hr>
+                Крем:{{ cake.cream.name }}<br>
+                <hr>
+                Ціна:{{ cake.cost }}<br>
+                <hr>
+                Вага:{{ cake.weight }}
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="hcake_id" value="{{ forloop.counter0 }}">
+                    <button name="action" value="remove_hcake" style="float:right;margin-top:5px;">видалити</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+    <div>
+        <button onclick="location.href='{% url 'buy_page' %}'">Оформити замовлення</button>
+    </div>
+{% endblock %}
