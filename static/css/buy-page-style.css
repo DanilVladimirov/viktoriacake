@@ -1,0 +1,52 @@
+.form-order {
+    display: grid;
+    padding: 10px;
+    border: 3px solid #f8b2fb;
+    background: white;
+    width: 400px;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.form-order input {
+    font-size: 20px;
+    height: 40px;
+    margin-bottom: 20px;
+    border: 3px solid #f8b2fb;
+    outline: none;
+}
+
+
+.form-order textarea {
+    font-size: 20px;
+    height: 40px;
+    margin-bottom: 20px;
+    border: 3px solid #f8b2fb;
+    outline: none;
+    max-width: 390px;
+    min-width: 390px;
+}
+
+.form-title {
+    border-bottom: 3px solid #f8b2fb;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.form-order button {
+    height: 45px;
+    width: 200px;
+    margin: auto;
+    background: #f8b2fb;
+    border: 2px solid #f8b2fb;
+    font-size: 24px;
+    color: #7319bf;
+    transition: all 0.3s ease-out;
+}
+
+.form-order button:hover {
+    background: white;
+    color: #7319bf;
+    transition: all 0.3s ease-out;
+}

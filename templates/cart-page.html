@@ -1,59 +1,120 @@
 {% extends 'template.html' %}
 
+{% block head %}
+    <link rel="stylesheet" href="/static/css/cakes-page-style.css">
+{% endblock %}
+
 {% block body %}
-    <div style="display: flex;">
+    {% if cakes or handmade %}
+        <div style="margin-left: 30px;margin-top: 30px;font-weight: bold;font-size: 24px;">До сплати: {{ total_cost }}
+            грн
+        </div>
+        <div>
+            <button class="cake-cart" style="float: none; margin-left: 30px;margin-top: 10px;"
+                    onclick="location.href='{% url 'buy_page' %}'">Оформити замовлення
+            </button>
+        </div>
+    {% endif %}
+    {% if not cakes and not handmade %}
+        <div style="margin-top: 30px;font-size: 30px;text-align: center;">Пусто :(</div>
+    {% endif %}
+
+    <div style="display: flex;flex-wrap: wrap;justify-content: center;">
         {% for cake in cakes %}
-            <div style="background: blueviolet;
-                    color: white;
-                    padding: 10px;
-                    width: 200px;
-                    border-radius: 10px;
-                    margin:10px 0px 10px 10px;">
-                Торт:{{ cake.name }}<br>
-                <hr>
-                Бісквіт:{{ cake.biscuit.name }}<br>
-                <hr>
-                Начинка:{{ cake.filling.name }}<br>
-                <hr>
-                Крем:{{ cake.cream.name }}
-                <hr>
-                Ціна:{{ cake.price }}<br>
-                <hr>
-                Вага:{{ cake.total_weight }}
-                <form method="post" action="">
-                    {% csrf_token %}
-                    <input type="hidden" name="cake_id" value="{{ cake.id }}">
-                    <button name="action" value="remove" style="float:right;margin-top:5px;">видалити</button>
-                </form>
+            <div class="cake-card">
+                <div class="img-side">
+                    <img src="{{ cake.img.url }}">
+                </div>
+                <div class="cake-title"><a href="{% url 'cake_details' cake.id %}">{{ cake.name }}</a>
+                </div>
+                <div class="cake-price"><span>{{ cake.cost }} грн</span></div>
+
+                <div style="display: flex;justify-content: space-between;">
+                    <button class="cake-cart" style="min-width: 0;" onclick="details_cake({{ cake.id }})">детально
+                    </button>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="cake_id" value="{{ cake.id }}">
+                        <button class="cake-cart" name="action" value="remove" style="min-width: 0;"><img
+                                style="width: 16px;" src="/static/icons8-trash-96.png"></button>
+                    </form>
+                </div>
+                <div style="display: none;color: black;background: white;border: 3px solid #cd95cf;position: absolute;padding: 10px;"
+                     id="details_{{ cake.id }}">
+                    <div style="font-weight: bold;">Вага: {{ cake.total_weight }}</div>
+                    <hr>
+                    <div style="font-weight: bold;">Бісквіт: "{{ cake.biscuit.name }}"</div>
+                    <div>{{ cake.biscuit.desc }}</div>
+                    <hr>
+                    <div style="font-weight: bold;">Начинка: "{{ cake.filling.name }}"</div>
+                    <div>{{ cake.filling.desc }}</div>
+                    <hr>
+                    <div style="font-weight: bold;">Крем: "{{ cake.cream.name }}"</div>
+                    <div>{{ cake.cream.desc }}</div>
+                    <hr>
+                    <div style="font-weight: bold;">Декор: "{{ cake.decoration.name }}"</div>
+                    <div>{{ cake.decoration.desc }}</div>
+                </div>
             </div>
+
         {% endfor %}
         {% for cake in handmade %}
-            <div style="background: blueviolet;
-                    color: white;
-                    padding: 10px;
-                    width: 200px;
-                    border-radius: 10px;
-                    margin:10px 0px 10px 10px;">
-                торт handmade<br>
-                <hr>
-                Бісквіт:{{ cake.bisc.name }}<br>
-                <hr>
-                Начинка:{{ cake.filling.name }}<br>
-                <hr>
-                Крем:{{ cake.cream.name }}<br>
-                <hr>
-                Ціна:{{ cake.cost }}<br>
-                <hr>
-                Вага:{{ cake.weight }}
-                <form method="post" action="">
-                    {% csrf_token %}
-                    <input type="hidden" name="hcake_id" value="{{ forloop.counter0 }}">
-                    <button name="action" value="remove_hcake" style="float:right;margin-top:5px;">видалити</button>
-                </form>
+            <div class="cake-card">
+                <div class="img-side">
+                    <img style="width: 100%;height: 100%;object-fit: contain;" src="/static/imgs/cake.png">
+                </div>
+                <div class="cake-title"><a style="color: #551a8b;">Авторський торт</a>
+                </div>
+                <div class="cake-price"><span>{{ cake.cost }} грн</span></div>
+
+                <div style="display: flex;justify-content: space-between;">
+                    <button class="cake-cart" style="min-width: 0;" onclick="details_hcake({{ forloop.counter0 }})">
+                        детально
+                    </button>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="hcake_id" value="{{ forloop.counter0 }}">
+                        <button class="cake-cart" name="action" value="remove_hcake" style="min-width: 0;"><img
+                                style="width: 16px;" src="/static/icons8-trash-96.png"></button>
+                    </form>
+                </div>
+                <div style="display: none;color: black;background: white;border: 3px solid #cd95cf;position: absolute;padding: 10px;"
+                     id="details_h_{{ forloop.counter0 }}">
+                    <div style="font-weight: bold;">Вага: {{ cake.weight }}</div>
+                    <hr>
+                    <div style="font-weight: bold;">Бісквіт: "{{ cake.bisc.name }}"</div>
+                    <div>{{ cake.biscuit.desc }}</div>
+                    <hr>
+                    <div style="font-weight: bold;">Начинка: "{{ cake.filling.name }}"</div>
+                    <div>{{ cake.filling.desc }}</div>
+                    <hr>
+                    <div style="font-weight: bold;">Крем: "{{ cake.cream.name }}"</div>
+                    <div>{{ cake.cream.desc }}</div>
+                    <hr>
+                    <div style="font-weight: bold;">Декор: "{{ cake.decor.name }}"</div>
+                    <div>{{ cake.decor.desc }}</div>
+                </div>
             </div>
         {% endfor %}
     </div>
-    <div>
-        <button onclick="location.href='{% url 'buy_page' %}'">Оформити замовлення</button>
-    </div>
+
+    <script>
+        function details_cake(cake_id) {
+            var id = 'details_' + cake_id;
+            if (document.getElementById(id).style.display === 'none') {
+                document.getElementById(id).style.display = 'table'
+            } else {
+                document.getElementById(id).style.display = 'none'
+            }
+        }
+
+        function details_hcake(cake_id) {
+            var id = 'details_h_' + cake_id;
+            if (document.getElementById(id).style.display === 'none') {
+                document.getElementById(id).style.display = 'table'
+            } else {
+                document.getElementById(id).style.display = 'none'
+            }
+        }
+    </script>
 {% endblock %}

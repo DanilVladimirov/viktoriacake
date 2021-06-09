@@ -1,0 +1,24 @@
+{% extends 'template.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/css/buy-page-style.css">
+{% endblock %}
+
+{% block body %}
+    <div style="margin-top: 10px;">
+        <div style="text-align: center;font-size: 30px;">Реєстрація</div>
+        <form method="post" class="form-order" style="margin-top: 10px;">
+            {% csrf_token %}
+            <div style="font-size: 20px;text-align: right;">Є аккаунт ? - <a href="{% url 'login_page' %}">ввійти</a></div>
+            <input type="text" placeholder="ім'я" name="first_name" id="id_first_name" required>
+            <input type="text" placeholder="призвіще" name="last_name" id="id_username" required>
+            <input type="email" placeholder="пошта" name="email" id="id_email">
+            <input type="text" placeholder="логін" name="username" id="id_username" required>
+            <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="050-424-1313" name="phone">
+            <input type="text" placeholder="адреса" name="address">
+            <input type="password" placeholder="пароль" name="password1" required>
+            <input type="password" placeholder="повторіть пароль" name="password2" required>
+            <button type="submit">зареєструватись</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -84,3 +85,28 @@ class Orders(models.Model):
     telephone = models.CharField(max_length=20, default="000-000-0000")
     address = models.CharField(max_length=400, default="no addr")
     comment = models.TextField(default="-")
+
+
+class WishList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    cakes = models.ManyToManyField(Cake)
+
+    def __str__(self):
+        return f'{self.user.username}'
+
+
+class Recommended(models.Model):
+    diameter = models.ForeignKey(CakeDiameters, on_delete=models.CASCADE, default=None, blank=True)
+    biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE, default=None)
+    filling = models.ForeignKey(Filling, on_delete=models.CASCADE, default=None)
+    cream = models.ForeignKey(Cream, on_delete=models.CASCADE, default=None)
+    decoration = models.ForeignKey(Decoration, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return f'#{self.id}'
+
+
+class Info(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=400)

@@ -10,7 +10,13 @@ from cakes.views import (start_page,
                          remover_session,
                          buy_page,
                          orders_page,
-                         addcart)
+                         addcart,
+                         add_to_wishlist,
+                         del_from_wishlist,
+                         profile_page,
+                         login_page,
+                         registration_page,
+                         logout_page)
 from viktoriiacake import settings
 
 urlpatterns = [
@@ -24,7 +30,13 @@ urlpatterns = [
     path('remove/', remover_session),
     path('buy/', buy_page, name='buy_page'),
     path('orders/', orders_page, name='orders_page'),
-    path('addcart/', addcart, name='addcart')
+    path('addcart/', addcart, name='addcart'),
+    path('add_wishlist/', add_to_wishlist, name='add_wishlist'),
+    path('del_wishlist/', del_from_wishlist, name='del_wishlist'),
+    path('profile/', profile_page, name='profile_page'),
+    path('login/', login_page, name='login_page'),
+    path('register/', registration_page, name='register_page'),
+    path('logout/', logout_page, name='logout_page')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

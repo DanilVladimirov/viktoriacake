@@ -5,7 +5,9 @@ from cakes.models import (Cream,
                           Decoration,
                           Filling,
                           CakeDiameters,
-                          Orders)
+                          Orders,
+                          WishList,
+                          Recommended)
 
 
 class CakeAdmin(admin.ModelAdmin):
@@ -23,3 +25,5 @@ admin.site.register(Filling)
 admin.site.register(Cake, CakeAdmin)
 admin.site.register(CakeDiameters)
 admin.site.register(Orders)
+admin.site.register(WishList)
+admin.site.register(Recommended)

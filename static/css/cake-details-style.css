@@ -1,0 +1,74 @@
+.cake-detail-container {
+    width: 1200px;
+    margin: auto;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.cake-detail-content {
+    display: flex;
+    justify-content: center;
+}
+
+
+.right-side {
+    width: 380px;
+    padding: 20px;
+}
+
+.cake-name {
+    font-size: 30px;
+    font-weight: bold;
+    word-break: break-word;
+}
+
+.cake-main-info {
+    display: flex;
+    align-items: baseline;
+}
+
+.cake-wd-info {
+    display: inline-grid;
+    margin-left: auto;
+}
+
+.wd-info {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.wd-info img {
+    width: 37px;
+}
+
+.wd-info span {
+    font-size: 20px;
+}
+
+.cake-desc {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.cake-detail {
+    padding: 5px;
+    border: 2px solid rgb(205, 149, 207);
+    margin-bottom: 5px;
+    display: table;
+    background: white;
+    width: 100%;
+}
+
+.cake-detail button {
+    width: 25px;
+    margin-inline-start: auto;
+    background: #cd95cf;
+    border: none;
+    color: white;
+}
+
+.cake-detail-title {
+    text-align: center;
+    font-weight: bold;
+}

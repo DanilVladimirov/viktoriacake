@@ -1,0 +1,76 @@
+.form-create {
+    display: grid;
+    padding: 10px;
+    width: 400px;
+    border: 3px solid #f8b2fb;
+    background: white;
+}
+
+.form-create select {
+    font-size: 20px;
+    height: 40px;
+    margin-bottom: 20px;
+    width: 400px;
+    border: 3px solid #f8b2fb;
+    outline: none;
+}
+
+
+.form-title {
+    border-bottom: 3px solid #f8b2fb;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.form-create button {
+    height: 45px;
+    width: 200px;
+    margin: auto;
+    background: #f8b2fb;
+    border: 2px solid #f8b2fb;
+    font-size: 24px;
+    color: #7319bf;
+    transition: all 0.3s ease-out;
+}
+
+.form-create button:hover {
+    background: white;
+    color: #7319bf;
+    transition: all 0.3s ease-out;
+}
+
+.btn-choose input {
+    font-size: 20px;
+    height: 30px;
+    margin-bottom: 20px;
+    width: 350px;
+    border: 3px solid #f8b2fb;
+    outline: none;
+}
+
+.btn-choose {
+    display: grid;
+    background: white;
+    padding: 20px;
+    border: 3px solid #f8b2fb;
+    margin: 10px;
+}
+
+
+.button-get {
+    height: 45px;
+    width: 150px;
+    margin: auto;
+    background: #f8b2fb;
+    border: 2px solid #f8b2fb;
+    font-size: 24px;
+    color: #7319bf;
+    transition: all 0.3s ease-out;
+}
+
+.button-get:hover {
+    background: white;
+    color: #7319bf;
+    transition: all 0.3s ease-out;
+}

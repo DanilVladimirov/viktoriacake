@@ -1,43 +1,102 @@
 {% extends 'template.html' %}
 
+{% block head %}
+    <link rel="stylesheet" href="/static/css/create-cake-style.css">
+{% endblock %}
+
 {% block body %}
-    <form method="post" action="" style="display: inline-grid;">
-        {% csrf_token %}
-        Бисквит:
-        <select name="biscuit">
-            <option>Виберіть</option>
-            {% for biscuit in biscuits %}
-                <option value="{{ biscuit.id }}">{{ biscuit.name }}({{ biscuit.cost }}грн/{{ biscuit.weight }}гр)</option>
+    {% if bad %}
+        <div style="text-align: center;
+    font-size: 30px;">Виберіть коректні значення</div>
+    {% endif %}
+    {% if good %}
+        <div style="text-align: center;
+    font-size: 30px;">В кошику !:)</div>
+    {% endif %}
+    <div style="display: flex;justify-content: space-evenly;margin-top: 40px;">
+        <form method="post" action="" class="form-create">
+            {% csrf_token %}
+            <div class="form-title">Оберіть складові товару:</div>
+            <select name="biscuit">
+                <option>Бісквіт</option>
+                {% for biscuit in biscuits %}
+                    <option value="{{ biscuit.id }}">{{ biscuit.name }}({{ biscuit.cost }}грн/{{ biscuit.weight }}гр)</option>
+                {% endfor %}
+            </select>
+            <select name="cream">
+                <option>Крем</option>
+                {% for cream in creams %}
+                    <option value="{{ cream.id }}">{{ cream.name }}({{ cream.cost }}грн/{{ cream.weight }}гр)</option>
+                {% endfor %}
+            </select>
+            <select name="filling">
+                <option>Начинка</option>
+                {% for fill in fillings %}
+                    <option value="{{ fill.id }}">{{ fill.name }}({{ fill.cost }}грн/{{ fill.weight }}гр)</option>
+                {% endfor %}
+            </select>
+            <select name="decor">
+                <option>Декор</option>
+                {% for decor in decors %}
+                    <option value="{{ decor.id }}">{{ decor.name }}({{ decor.cost }}грн)</option>
+                {% endfor %}
+            </select>
+            <select name="diameter">
+                <option>Діаметр</option>
+                {% for diameter in diameters %}
+                    <option value="{{ diameter.id }}">{{ diameter.diameter }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">в кошик</button>
+        </form>
+
+        <div style="padding: 20px;border: 3px solid #f8b2fb;height: 430px;">
+            <div style="font-size: 24px;text-align: center;">Рекомендовані поєднання:</div>
+            <div style="display: flex;">
+                {% for rec in recommended %}
+                    <button style="display: grid;padding: 20px;" class="btn-choose" id="btn_{{ forloop.counter }}" onclick="chooser({{ forloop.counter }})">
+                        <input type="text" value="{{ rec.biscuit.name }}" readonly>
+                        <input type="text" value="{{ rec.cream.name }}" readonly>
+                        <input type="text" value="{{ rec.filling.name }}" readonly>
+                        <input type="text" value="{{ rec.decoration.name }}" readonly>
+                        <input type="text" value="{{ rec.diameter.diameter }}" readonly>
+                    </button>
+                {% endfor %}
+            </div>
+
+            {% for rec in recommended %}
+                <form id="choose_{{ forloop.counter }}" style="display: none;text-align: center;margin-top: 5px;" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="button-get">в кошик</button>
+                    <input name="diameter" type="hidden" value="{{ rec.diameter.id }}">
+                    <input name="biscuit" type="hidden" value="{{ rec.biscuit.id }}">
+                    <input name="filling" type="hidden" value="{{ rec.filling.id }}">
+                    <input name="cream" type="hidden" value="{{ rec.cream.id }}">
+                    <input name="decor" type="hidden" value="{{ rec.decoration.id }}">
+                </form>
             {% endfor %}
-        </select>
-        Крем:
-        <select name="cream">
-            <option>Виберіть</option>
-            {% for cream in creams %}
-                <option value="{{ cream.id }}">{{ cream.name }}({{ cream.cost }}грн/{{ cream.weight }}гр)</option>
-            {% endfor %}
-        </select>
-        Начинка:
-        <select name="filling">
-            <option>Виберіть</option>
-            {% for fill in fillings %}
-                <option value="{{ fill.id }}">{{ fill.name }}({{ fill.cost }}грн/{{ fill.weight }}гр)</option>
-            {% endfor %}
-        </select>
-        Декор:
-        <select name="decor">
-            <option>Виберіть</option>
-            {% for decor in decors %}
-                <option value="{{ decor.id }}">{{ decor.name }}({{ decor.cost }}грн)</option>
-            {% endfor %}
-        </select>
-        Діаметр:
-        <select name="diameter">
-            <option>Виберіть</option>
-            {% for diameter in diameters %}
-                <option value="{{ diameter.id }}">{{ diameter.diameter }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">submit</button>
-    </form>
+        </div>
+    </div>
+
+
+    <script>
+        function chooser(choose_id) {
+            var id = 'choose_1';
+            var id_2 = 'choose_2';
+            var choose = 'btn_1'
+            var choose_2 = 'btn_2'
+            if (choose_id === 1) {
+                document.getElementById(id).style.display = "block";
+                document.getElementById(choose).style.background = "#f8b2fb";
+                document.getElementById(id_2).style.display = "none";
+                document.getElementById(choose_2).style.background = "white";
+            }
+            if (choose_id === 2) {
+                document.getElementById(id).style.display = "none";
+                document.getElementById(choose).style.background = "white";
+                document.getElementById(id_2).style.display = "block";
+                document.getElementById(choose_2).style.background = "#f8b2fb";
+            }
+        }
+    </script>
 {% endblock %}

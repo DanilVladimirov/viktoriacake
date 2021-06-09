@@ -1,13 +1,21 @@
 {% extends 'template.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/css/buy-page-style.css">
+{% endblock %}
 {% block body %}
-    <div style="text-align: center">
-        <form method="post" action="" style="display: inline-grid;">
+    <div style="">
+        <form method="post" action="" class="form-order">
             {% csrf_token %}
-            <input style="width: 300px;height: 40px;margin-bottom: 10px;" type="text" placeholder="Ім'я" name="name" required>
-            <input style="width: 300px;height: 40px;margin-bottom: 10px;" type="text" placeholder="Призвіще" name="surname" required>
-            <input style="width: 300px;height: 40px;margin-bottom: 10px;" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="050-123-4567" name="telephone" required>
-            <input style="width: 300px;height: 40px;margin-bottom: 10px;" type="text" placeholder="Адресса" name="address" required>
-            <textarea style="width: 300px;height: 40px;margin-bottom: 10px;" name="comment" placeholder="Побажання до замовлення"></textarea>
+            <input type="text" placeholder="Ім'я" name="name" value="{{ request.user.first_name }}"
+                   required>
+            <input type="text" placeholder="Призвіще" value="{{ request.user.last_name }}"
+                   name="surname" required>
+            <input type="tel"
+                   pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="050-123-4567" name="telephone" value="{{ request.user.info.phone }}" required>
+            <input type="text" placeholder="Адреса" name="address" value="{{ request.user.info.address }}" required>
+            <textarea name="comment"
+                      placeholder="Побажання до замовлення"></textarea>
             <button type="submit" name="action" value="create_order">Оформити</button>
         </form>
     </div>

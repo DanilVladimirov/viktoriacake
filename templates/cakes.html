@@ -3,7 +3,9 @@
     <link rel="stylesheet" href="/static/css/cakes-page-style.css">
 {% endblock %}
 {% block body %}
-    <div style="display: flex;">
+    <div style="display: flex;width: 1000px;
+    margin: auto;
+    justify-content: center;flex-wrap: wrap;">
         {% for cake in cakes %}
             <div class="cake-card">
                 <div class="img-side">
@@ -12,22 +14,30 @@
                 <div class="cake-title"><a href="{% url 'cake_details' cake.id %}">{{ cake.name }}</a>
                 </div>
                 <div class="cake-price"><span>{{ cake.cost }} грн</span></div>
-                {#            Бісквіт:{{ cake.biscuit.name }}<br>#}
-                {#            <hr>#}
-                {#            Начинка:{{ cake.filling.name }}<br>#}
-                {#            <hr>#}
-                {#            Крем:{{ cake.cream.name }}#}
-
-                {#                <input type="hidden" name="cake_id" value="{{ cake.id }}">#}
                 {% load tags %}
                 <button onclick="add_cart({{ cake.id }})" class="cake-cart" id="button_add_{{ cake.id }}">
                     {% if request|is_in_cart:cake.id %}
                         В кошику !
-                        {% else %}
+                    {% else %}
                         В кошик
                     {% endif %}
                 </button>
-                <button name="action" value="add_cart" class="cake-like">♥</button>
+                {% if request.user.is_authenticated %}
+                    {% if request|is_in_wishlist:cake.id %}
+                        <button class="cake-like" onclick="del_wishlist({{ cake.id }})" id="button_add_w_{{ cake.id }}">
+                            ✓
+                        </button>
+                    {% else %}
+                        <button class="cake-like" onclick="add_wishlist({{ cake.id }})" id="button_add_w_{{ cake.id }}">
+                            ♥
+                        </button>
+                    {% endif %}
+                {% else %}
+                    <button class="cake-like" onclick="location.href='{% url 'login_page' %}'"
+                            id="button_add_w_{{ cake.id }}">
+                        ♥
+                    </button>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
@@ -42,6 +52,44 @@
                     if (data.success) {
                         var id_btn = '#button_add_' + cakeid;
                         $(id_btn).text('В кошику !');
+                    } else {
+
+                    }
+                }
+            });
+        }
+
+        function add_wishlist(cakeid) {
+            $.ajax({
+                type: 'POST', url: '{% url "add_wishlist" %}',
+                data: {'csrfmiddlewaretoken': csrf_token, 'cakeid': cakeid},
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data.success) {
+                        var id_btn = '#button_add_w_' + cakeid;
+                        $(id_btn).text('✓');
+                        var b = document.querySelector(id_btn);
+                        b.setAttribute("onclick", 'del_wishlist(' + cakeid + ')');
+                    } else {
+
+                    }
+                }
+            });
+        }
+
+        function del_wishlist(cakeid) {
+            $.ajax({
+                type: 'POST', url: '{% url "del_wishlist" %}',
+                data: {'csrfmiddlewaretoken': csrf_token, 'cakeid': cakeid},
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data.success) {
+                        var id_btn = '#button_add_w_' + cakeid;
+                        $(id_btn).text('♥');
+                        var b = document.querySelector(id_btn);
+                        b.setAttribute("onclick", 'add_wishlist(' + cakeid + ')');
                     } else {
 
                     }

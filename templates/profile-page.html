@@ -1,0 +1,88 @@
+{% extends 'template.html' %}
+{% block head %}
+    <link rel="stylesheet" href="/static/css/cakes-page-style.css">
+    <link rel="stylesheet" href="/static/css/buy-page-style.css">
+    <link rel="stylesheet" href="/static/css/profile-page.css">
+{% endblock %}
+{% block body %}
+    <div style="text-align: right;">
+        <button class="button-logout" onclick="location.href='{% url 'logout_page' %}'">вийти</button>
+    </div>
+    <div style="display:flex;justify-content: center;">
+        <div style="margin-top: 10px;">
+            <form method="post" class="form-order" style="margin-top: 10px;">
+                {% csrf_token %}
+                <input type="text" placeholder="ім'я" name="first_name" id="id_first_name"
+                       value="{{ request.user.first_name }}" required>
+                <input type="text" placeholder="призвіще" name="last_name" id="id_username"
+                       value="{{ request.user.last_name }}" required>
+                <input type="email" placeholder="пошта" name="email" id="id_email" value="{{ request.user.email }}"
+                       required>
+                <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="050-424-1313" name="phone"
+                       value="{{ request.user.info.phone }}">
+                <input type="text" placeholder="адреса" name="address" value="{{ request.user.info.address }}" required>
+                <button type="submit" name="action" value="change">редагувати</button>
+            </form>
+        </div>
+        <div style="width: 60%;">
+            <div style="text-align: center;font-size: 30px;color: #7319bf;font-weight: bold;">список бажань</div>
+            <div style="display: flex;flex-wrap: wrap;justify-content: center;">
+                {% for cake in wishlist.cakes.all %}
+                    <div class="cake-card" style="margin: 20px;" id="cake_{{ cake.id }}">
+                        <div class="img-side">
+                            <img src="{{ cake.img.url }}">
+                        </div>
+                        <div class="cake-title"><a href="{% url 'cake_details' cake.id %}">{{ cake.name }}</a>
+                        </div>
+                        <div class="cake-price"><span>{{ cake.cost }} грн</span></div>
+                        {% load tags %}
+                        <button onclick="add_cart({{ cake.id }})" class="cake-cart" id="button_add_{{ cake.id }}">
+                            {% if request|is_in_cart:cake.id %}
+                                В кошику !
+                            {% else %}
+                                В кошик
+                            {% endif %}
+                        </button>
+                        <button class="cake-like" onclick="del_wishlist({{ cake.id }})">☓
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        function add_cart(cakeid) {
+            $.ajax({
+                type: 'POST', url: '{% url "addcart" %}',
+                data: {'csrfmiddlewaretoken': csrf_token, 'cakeid': cakeid},
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data.success) {
+                        var id_btn = '#button_add_' + cakeid;
+                        $(id_btn).text('В кошику !');
+                    } else {
+
+                    }
+                }
+            });
+        }
+
+        function del_wishlist(cakeid) {
+            $.ajax({
+                type: 'POST', url: '{% url "del_wishlist" %}',
+                data: {'csrfmiddlewaretoken': csrf_token, 'cakeid': cakeid},
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data.success) {
+                        var el = document.getElementById('cake_' + cakeid);
+                        el.remove();
+                    } else {
+
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}

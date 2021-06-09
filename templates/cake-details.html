@@ -1,7 +1,216 @@
 {% extends 'template.html' %}
 
+{% block head %}
+    <link rel="stylesheet" href="/static/css/cakes-page-style.css">
+    <link rel="stylesheet" href="/static/css/cake-details-style.css">
+{% endblock %}
+
 {% block body %}
-    {{ cake.name }}
-    {{ cake.desc }}
-    {{ cake.biscuit.desc }}
+    <div class="cake-detail-container">
+        <div class="cake-detail-content">
+            <div>
+                <img src="{{ cake.img.url }}" style="width: 400px;">
+            </div>
+            {# right side #}
+            <div style="margin-left: 10px;">
+
+                <div class="right-side">
+                    <div class="cake-name">{{ cake.name }}</div>
+                    <div><span style="font-size: 24px;">{{ cake.cost }} грн</span></div>
+                    <div class="cake-main-info">
+                        <div>
+                            {% load tags %}
+                            <button onclick="add_cart({{ cake.id }})" class="cake-cart" style="float: none;"
+                                    id="button_add_{{ cake.id }}">
+                                {% if request|is_in_cart:cake.id %}
+                                    В кошику !
+                                {% else %}
+                                    В кошик
+                                {% endif %}
+                            </button>
+                            {% if request.user.is_authenticated %}
+                                {% if request|is_in_wishlist:cake.id %}
+                                    <button class="cake-like" onclick="del_wishlist({{ cake.id }})"
+                                            id="button_add_w_{{ cake.id }}">
+                                        ✓
+                                    </button>
+                                {% else %}
+                                    <button class="cake-like" onclick="add_wishlist({{ cake.id }})"
+                                            id="button_add_w_{{ cake.id }}">
+                                        ♥
+                                    </button>
+                                {% endif %}
+                            {% else %}
+                                <button class="cake-like" onclick="location.href='{% url 'login_page' %}'"
+                                        id="button_add_w_{{ cake.id }}">
+                                    ♥
+                                </button>
+                            {% endif %}
+                        </div>
+
+                        <div class="cake-wd-info">
+                            <div style="display: flex;">
+                                <div class="wd-info"><img src="/static/icons8-weight-64.png">
+                                    <span>{{ cake.weight }}</span>
+                                </div>
+                                <div class="wd-info"><img src="/static/icons8-diameter-100.png">
+                                    <span>{{ cake.diameter.diameter }}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="cake-desc">{{ cake.desc }}</div>
+
+                    <div class="cake-detail">
+                        <div style="display: flex;">
+                            <span style="font-size: 20px;">Бісквіт</span>
+                            <button id="btn_bisc" onclick="viewBiscuit()">˅</button>
+                        </div>
+                        <div style="display: none;" id="bisc_div">
+                            <hr>
+                            <div class="cake-detail-title">"{{ cake.biscuit.name }}"</div>
+                            <div style="word-break: break-word;">{{ cake.biscuit.desc }}</div>
+                        </div>
+                    </div>
+
+                    <div class="cake-detail">
+                        <div style="display: flex;">
+                            <span style="font-size: 20px;">Начинка</span>
+                            <button id="btn_fill" onclick="viewFilling()">˅</button>
+                        </div>
+                        <div style="display: none;" id="fill_div">
+                            <hr>
+                            <div class="cake-detail-title">"{{ cake.filling.name }}"</div>
+                            <div style="word-break: break-word;">{{ cake.filling.desc }}</div>
+                        </div>
+                    </div>
+
+                    <div class="cake-detail">
+                        <div style="display: flex;">
+                            <span style="font-size: 20px;">Крем</span>
+                            <button id="btn_cream" onclick="viewCream()">˅</button>
+                        </div>
+                        <div style="display: none;" id="cream_div">
+                            <hr>
+                            <div class="cake-detail-title">"{{ cake.cream.name }}"</div>
+                            <div style="word-break: break-word;">{{ cake.cream.desc }}</div>
+                        </div>
+                    </div>
+
+                    <div class="cake-detail">
+                        <div style="display: flex;">
+                            <span style="font-size: 20px;">Декор</span>
+                            <button id="btn_decor" onclick="viewDecor()">˅</button>
+                        </div>
+                        <div style="display: none;" id="decor_div">
+                            <hr>
+                            <div class="cake-detail-title">"{{ cake.decoration.name }}"</div>
+                            <div style="word-break: break-word;">{{ cake.decoration.desc }}</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function viewBiscuit() {
+
+            if (document.getElementById("bisc_div").style.display === "block") {
+                document.getElementById("bisc_div").style.display = "none";
+                document.getElementById("btn_bisc").textContent = "˅";
+            } else {
+                document.getElementById("bisc_div").style.display = "block";
+                document.getElementById("btn_bisc").textContent = "˄";
+            }
+        }
+
+        function viewFilling() {
+            if (document.getElementById("fill_div").style.display === "block") {
+                document.getElementById("fill_div").style.display = "none";
+                document.getElementById("btn_fill").textContent = "˅";
+            } else {
+                document.getElementById("fill_div").style.display = "block";
+                document.getElementById("btn_fill").textContent = "˄";
+            }
+        }
+
+        function viewCream() {
+
+            if (document.getElementById("cream_div").style.display === "block") {
+                document.getElementById("cream_div").style.display = "none";
+                document.getElementById("btn_cream").textContent = "˅";
+            } else {
+                document.getElementById("cream_div").style.display = "block";
+                document.getElementById("btn_cream").textContent = "˄";
+            }
+        }
+
+        function viewDecor() {
+
+            if (document.getElementById("decor_div").style.display === "block") {
+                document.getElementById("decor_div").style.display = "none";
+                document.getElementById("btn_decor").textContent = "˅";
+            } else {
+                document.getElementById("decor_div").style.display = "block";
+                document.getElementById("btn_decor").textContent = "˄";
+            }
+        }
+
+        function add_cart(cakeid) {
+            $.ajax({
+                type: 'POST', url: '{% url "addcart" %}',
+                data: {'csrfmiddlewaretoken': csrf_token, 'cakeid': cakeid},
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data.success) {
+                        var id_btn = '#button_add_' + cakeid;
+                        $(id_btn).text('В кошику !');
+                    } else {
+
+                    }
+                }
+            });
+        }
+
+        function add_wishlist(cakeid) {
+            $.ajax({
+                type: 'POST', url: '{% url "add_wishlist" %}',
+                data: {'csrfmiddlewaretoken': csrf_token, 'cakeid': cakeid},
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data.success) {
+                        var id_btn = '#button_add_w_' + cakeid;
+                        $(id_btn).text('✓');
+                        var b = document.querySelector(id_btn);
+                        b.setAttribute("onclick", 'del_wishlist(' + cakeid + ')');
+                    } else {
+
+                    }
+                }
+            });
+        }
+
+        function del_wishlist(cakeid) {
+            $.ajax({
+                type: 'POST', url: '{% url "del_wishlist" %}',
+                data: {'csrfmiddlewaretoken': csrf_token, 'cakeid': cakeid},
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data.success) {
+                        var id_btn = '#button_add_w_' + cakeid;
+                        $(id_btn).text('♥');
+                        var b = document.querySelector(id_btn);
+                        b.setAttribute("onclick", 'add_wishlist(' + cakeid + ')');
+                    } else {
+
+                    }
+                }
+            });
+        }
+    </script>
 {% endblock %}
