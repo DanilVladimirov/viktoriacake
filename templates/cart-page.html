@@ -27,7 +27,7 @@
                 </div>
                 <div class="cake-title"><a href="{% url 'cake_details' cake.id %}">{{ cake.name }}</a>
                 </div>
-                <div class="cake-price"><span>{{ cake.cost }} грн</span></div>
+                <div class="cake-price"><span>{{ cake.price }} грн</span></div>
 
                 <div style="display: flex;justify-content: space-between;">
                     <button class="cake-cart" style="min-width: 0;" onclick="details_cake({{ cake.id }})">детально
