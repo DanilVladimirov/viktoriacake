@@ -6,7 +6,7 @@
 
 {% block body %}
     {% if cakes or handmade %}
-        <div style="margin-left: 30px;margin-top: 30px;font-weight: bold;font-size: 24px;">До сплати: {{ total_cost }}
+        <div style="margin-left: 30px;margin-top: 30px;font-weight: bold;font-size: 24px;">До сплати: {{ total_cost|floatformat:1 }}
             грн
         </div>
         <div>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="cake-title"><a style="color: #551a8b;">Авторський торт</a>
                 </div>
-                <div class="cake-price"><span>{{ cake.cost }} грн</span></div>
+                <div class="cake-price"><span>{{ cake.cost|floatformat:1 }} грн</span></div>
 
                 <div style="display: flex;justify-content: space-between;">
                     <button class="cake-cart" style="min-width: 0;" onclick="details_hcake({{ forloop.counter0 }})">
