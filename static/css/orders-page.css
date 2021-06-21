@@ -1,0 +1,47 @@
+.order {
+    background: white;
+    color: white;
+    padding: 10px;
+    border: 3px solid #f8b2fb;
+    margin: auto;
+    width: 1200px;
+    margin-top: 10px;
+}
+
+.order-title {
+    font-size: 20px;
+    color: #551a8b;
+}
+
+
+.order-cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.order-card {
+    background-color: white;
+    color: black;
+    border: 3px solid #f8b2fb;
+    padding: 10px;
+    width: 250px;
+    margin: 10px;
+    word-break: break-word;
+}
+
+
+.order-button {
+    margin: auto;
+    background: #f8b2fb;
+    border: 2px solid #f8b2fb;
+    font-size: 20px;
+    color: #7319bf;
+    transition: all 0.3s ease-out;
+    float: right;
+}
+
+.order-button:hover {
+    background: white;
+    color: #7319bf;
+    transition: all 0.3s ease-out;
+}

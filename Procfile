@@ -1,0 +1,1 @@
+web: gunicorn viktoriiacake.wsgi

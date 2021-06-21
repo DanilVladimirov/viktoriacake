@@ -9,11 +9,13 @@
         {% for cake in cakes %}
             <div class="cake-card">
                 <div class="img-side">
-                    <img src="{{ cake.img.url }}">
+                    {% if cake.img %}
+                        <img src="{{ cake.img.url }}">
+                    {% endif %}
                 </div>
                 <div class="cake-title"><a href="{% url 'cake_details' cake.id %}">{{ cake.name }}</a>
                 </div>
-                <div class="cake-price"><span>{{ cake.cost }} грн</span></div>
+                <div class="cake-price"><span>{{ cake.price }} грн</span></div>
                 {% load tags %}
                 <button onclick="add_cart({{ cake.id }})" class="cake-cart" id="button_add_{{ cake.id }}">
                     {% if request|is_in_cart:cake.id %}
@@ -41,6 +43,7 @@
             </div>
         {% endfor %}
     </div>
+
     <script>
         function add_cart(cakeid) {
             $.ajax({

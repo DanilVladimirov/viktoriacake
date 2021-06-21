@@ -4,19 +4,25 @@
     <link rel="stylesheet" href="/static/css/buy-page-style.css">
 {% endblock %}
 {% block body %}
-    <div style="">
-        <form method="post" action="" class="form-order">
-            {% csrf_token %}
-            <input type="text" placeholder="Ім'я" name="name" value="{{ request.user.first_name }}"
-                   required>
-            <input type="text" placeholder="Призвіще" value="{{ request.user.last_name }}"
-                   name="surname" required>
-            <input type="tel"
-                   pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="050-123-4567" name="telephone" value="{{ request.user.info.phone }}" required>
-            <input type="text" placeholder="Адреса" name="address" value="{{ request.user.info.address }}" required>
-            <textarea name="comment"
-                      placeholder="Побажання до замовлення"></textarea>
-            <button type="submit" name="action" value="create_order">Оформити</button>
-        </form>
-    </div>
+    {% if ordered %}
+        <div style="margin-top: 30px;font-size: 30px;text-align: center;">Дякуємо за замовлення :)</div>
+    {% endif %}
+    {% if not ordered %}
+        <div style="">
+            <form method="post" action="" class="form-order">
+                {% csrf_token %}
+                <input type="text" placeholder="Ім'я" name="name" value="{{ request.user.first_name }}"
+                       required>
+                <input type="text" placeholder="Призвіще" value="{{ request.user.last_name }}"
+                       name="surname" required>
+                <input type="tel"
+                       pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="050-123-4567" name="telephone"
+                       value="{{ request.user.info.phone }}" required>
+                <input type="text" placeholder="Адреса" name="address" value="{{ request.user.info.address }}" required>
+                <textarea name="comment"
+                          placeholder="Побажання до замовлення"></textarea>
+                <button type="submit" name="action" value="create_order">Оформити</button>
+            </form>
+        </div>
+    {% endif %}
 {% endblock %}

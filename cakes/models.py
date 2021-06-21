@@ -1,5 +1,15 @@
+import os
+import random
+
 from django.contrib.auth.models import User
 from django.db import models
+
+
+def file_path(instance, filename):
+    basefilename, file_extension = os.path.splitext(filename)
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
+    randomstr = ''.join((random.choice(chars)) for x in range(10))
+    return f'{basefilename}_{randomstr}{file_extension}'
 
 
 class CakeDiameters(models.Model):
@@ -13,7 +23,7 @@ class CakeDiameters(models.Model):
 class Biscuit(models.Model):
     name = models.CharField(max_length=100, default='Noname Biscuit')
     cost = models.FloatField(default=0.0)
-    img = models.ImageField(upload_to='biscuit/', blank=True)
+    img = models.ImageField(upload_to=file_path, blank=True)
     weight = models.FloatField(default=0.0)
     desc = models.TextField(default='Опис')
 
@@ -24,7 +34,7 @@ class Biscuit(models.Model):
 class Filling(models.Model):
     name = models.CharField(max_length=100, default='Noname Filling')
     cost = models.FloatField(default=0.0)
-    img = models.ImageField(upload_to='fillings/', blank=True)
+    img = models.ImageField(upload_to=file_path, blank=True)
     weight = models.FloatField(default=0.0)
     desc = models.TextField(default='Опис')
 
@@ -35,7 +45,7 @@ class Filling(models.Model):
 class Cream(models.Model):
     name = models.CharField(max_length=100, default='Noname Cream')
     cost = models.FloatField(default=0.0)
-    img = models.ImageField(upload_to='creams/', blank=True)
+    img = models.ImageField(upload_to=file_path, blank=True)
     weight = models.FloatField(default=0.0)
     desc = models.TextField(default='Опис')
 
@@ -46,7 +56,7 @@ class Cream(models.Model):
 class Decoration(models.Model):
     name = models.CharField(max_length=100, default='Noname Decor')
     cost = models.FloatField(default=0.0)
-    img = models.ImageField(upload_to='decors/', blank=True)
+    img = models.ImageField(upload_to=file_path, blank=True)
     desc = models.TextField(default='Опис')
 
     def __str__(self):
@@ -56,7 +66,7 @@ class Decoration(models.Model):
 class Cake(models.Model):
     name = models.CharField(max_length=100, default='Noname Cake')
     cost = models.FloatField(default=0.0)
-    img = models.ImageField(upload_to='cakes/', default=None, blank=True)
+    img = models.ImageField(upload_to=file_path, default=None, blank=True)
     weight = models.FloatField(default=0.0)
     diameter = models.ForeignKey(CakeDiameters, on_delete=models.CASCADE, default=None, blank=True)
     biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE, default=None)
@@ -72,7 +82,7 @@ class Cake(models.Model):
             return f'name: {self.name}'
 
     def price(self):
-        return (self.biscuit.cost + self.filling.cost + self.cream.cost + self.decoration.cost) * self.diameter.coefficient
+        return round((self.biscuit.cost + self.filling.cost + self.cream.cost + self.decoration.cost) * self.diameter.coefficient)
 
     def total_weight(self):
         return round((self.biscuit.weight + self.filling.weight + self.cream.weight) * self.diameter.coefficient)

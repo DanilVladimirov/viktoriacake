@@ -72,6 +72,9 @@
 <ul>
     <li><a href="{% url 'cakes' %}">Торти</a></li>
     <li><a href="{% url 'create_cake' %}">Конструктор</a></li>
+    {% if request.user.is_superuser %}
+        <li><a href="{% url 'orders_page' %}">Замовлення</a></li>
+    {% endif %}
     <li class="with_img" onclick="location.href='{% url 'profile_page' %}'">
         <img style="width: 40px;margin-top: 5px;" src="/static/imgs/user-cake.png">
     </li>

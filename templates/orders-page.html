@@ -1,25 +1,33 @@
 {% extends 'template.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/css/orders-page.css">
+    <link rel="stylesheet" href="/static/css/profile-page.css">
+{% endblock %}
+
 {% block body %}
+    <div style="text-align: right;">
+        <button class="button-logout" onclick="location.href='{% url 'admin:index' %}'">адмінка</button>
+        <button class="button-logout" onclick="location.href='{% url 'logout_page' %}'">вийти</button>
+    </div>
     <div style="display: grid;">
         {% for order in orders %}
-            <div style="background: blueviolet;
-                    color: white;
-                    padding: 10px;
-                    border-radius: 10px;
-                    margin:10px 0px 10px 10px;
-                    ">
-                <div style="font-size: 20px;">замовлення #{{ order.id }}</div>
-                <div style="display: flex;flex-wrap: wrap;">
-                    <div style="background-color: white; color: black;border-radius: 10px;padding: 10px;">
+            <div class="order">
+                <div class="order-title">замовлення #{{ order.id }}</div>
+                <div class="order-cards">
+                    <div class="order-card">
                         Ім'я: {{ order.name }}<br>
                         <hr>
                         Призвіще: {{ order.surname }}<br>
                         <hr>
                         Номер:{{ order.telephone }}<br>
                         <hr>
+                        Адресса:{{ order.address }}<br>
+                        <hr>
+                        Побажання:{{ order.comment }}<br>
                     </div>
                     {% for cake in order.cakes.all %}
-                        <div style="background-color: white; color: black;border-radius: 10px;padding: 10px;margin-left: 10px;">
+                        <div class="order-card">
                             Назва: {{ cake.name }}<br>
                             <hr>
                             Бісквіт:{{ cake.biscuit.name }}<br>
@@ -28,17 +36,18 @@
                             <hr>
                             Крем:{{ cake.cream.name }}<br>
                             <hr>
+                            Декор:{{ cake.decoration.name }}<br>
+                            <hr>
                             Діаметер:{{ cake.diameter.diameter }}<br>
                             <hr>
                             Вага:{{ cake.weight }}
-
                         </div>
                     {% endfor %}
                 </div>
                 <form method="post" action="">
                     {% csrf_token %}
                     <input type="hidden" name="order_id" value="{{ order.id }}">
-                    <button name="action" value="ready" style="float:right;margin-top:5px;">Готовий</button>
+                    <button name="action" value="ready" class="order-button">Готовий</button>
                 </form>
             </div>
         {% endfor %}

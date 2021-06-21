@@ -22,27 +22,9 @@ def start_page(request):
     return redirect('cakes')
 
 
-def add_cake(request):
-    return render(request, 'add-cake.html')
-
-
 def view_cakes(request):
-    cakes = Cake.objects.exclude(name='Handmade')
+    cakes = Cake.objects.exclude(name='Кастомний')
     context = {'cakes': cakes}
-    action = request.POST.get('action')
-    cart = request.session.get('cart', {})
-    if request.POST and action == 'add_cart':
-        cakes_cart = cart.get('cakes')
-        curr_cake = request.POST.get('cake_id')
-        if cakes_cart is None:
-            cake = [{'id': Cake.objects.get(id=curr_cake).id}]
-            request.session['cart'] = cart
-            cart['cakes'] = cake
-            request.session.modified = True
-        else:
-            cakes_cart.append({'id': Cake.objects.get(id=curr_cake).id})
-            cart['cakes'] = cakes_cart
-            request.session.modified = True
     return render(request, 'cakes.html', context)
 
 
@@ -97,11 +79,6 @@ def create_cake(request):
     return render(request, 'create_cake.html', context)
 
 
-def remover_session(request):
-    request.session.clear()
-    return HttpResponse('ahaha')
-
-
 def cart_page(request):
     cart = request.session.get('cart', {})
     action = request.POST.get('action')
@@ -132,7 +109,7 @@ def cart_page(request):
         elif el == 'cakes':
             for cake in cart[el]:
                 context['cakes'].append(Cake.objects.get(id=cake.get('id')))
-                total_cost += Cake.objects.get(id=cake.get('id')).cost
+                total_cost += Cake.objects.get(id=cake.get('id')).price()
 
     context.update({'total_cost': total_cost})
     print(context)
@@ -174,10 +151,18 @@ def buy_page(request):
             comment=request.POST.get('comment'))
         new_order.cakes.set(list_cakes)
         new_order.save()
+        request.session['cart'] = {}
+        request.session.modified = True
+        return render(request, 'buy-page.html', {'ordered': True})
+    if len(cart) == 0:
+        return redirect('start_page')
     return render(request, 'buy-page.html')
 
 
-def orders_page(request):
+@login_required
+def admin_page(request):
+    if not request.user.is_superuser:
+        return redirect('start_page')
     context = {}
     context.update({'orders': Orders.objects.all()})
     action = request.POST.get('action')
@@ -242,9 +227,11 @@ def del_from_wishlist(request):
 
 @login_required(login_url='login_page')
 def profile_page(request):
+    if request.user.is_superuser:
+        return redirect('orders_page')
     context = {}
     action = request.POST.get('action')
-    if request.POST and action == "change" :
+    if request.POST and action == "change":
         user = request.user
         user.first_name = request.POST.get('first_name')
         user.last_name = request.POST.get('last_name')
@@ -279,8 +266,10 @@ def logout_page(request):
 
 
 def registration_page(request):
+    context = {}
     if request.POST:
         form = UserRegisterForm(request.POST)
+        context = {'form': form}
         if form.is_valid():
             new_user = form.save()
             new_info = Info.objects.create(user=new_user,
@@ -290,4 +279,9 @@ def registration_page(request):
             new_wishlist = WishList.objects.create(user=new_user)
             new_wishlist.save()
             return redirect('login_page')
-    return render(request, 'register-page.html')
+    return render(request, 'register-page.html', context)
+
+
+def test(request):
+
+    return HttpResponse(json.dumps({'haahah': True}), content_type='application/json')

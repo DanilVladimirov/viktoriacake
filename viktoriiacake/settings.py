@@ -2,6 +2,11 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import gdown
+from google.oauth2 import service_account
+import django_heroku
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -21,7 +26,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'cakes',
-
+    'storages',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -116,3 +121,22 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = "/mediafiles/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = 'googledrive.json'
+
+URL_GOOGLE_JSON = os.environ.get('URL_GOOGLE_JSON')
+
+if os.path.exists(os.path.join(BASE_DIR, 'googledrive.json')):
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(os.path.join(BASE_DIR, 'googledrive.json'))
+else:
+    gdown.download(URL_GOOGLE_JSON, quiet=False)
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(os.path.join(BASE_DIR, 'googledrive.json'))
+# configuration for media file storing and reriving media file from gcloud
+DEFAULT_FILE_STORAGE = 'viktoriiacake.gcloud.GoogleCloudMediaFileStorage'
+GS_PROJECT_ID = 'solid-heaven-312719'
+GS_BUCKET_NAME = 'contact-storage'
+MEDIA_ROOT = 'media/'
+UPLOAD_ROOT = 'media/uploads/'
+MEDIA_URL = 'https://storage.googleapis.com/{}/'.format(GS_BUCKET_NAME)
+
+django_heroku.settings(locals())
