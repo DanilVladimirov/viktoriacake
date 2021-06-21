@@ -10,14 +10,14 @@
         <form method="post" class="form-order" style="margin-top: 10px;">
             {% csrf_token %}
             <div style="font-size: 20px;text-align: right;">Є аккаунт ? - <a href="{% url 'login_page' %}">ввійти</a></div>
-            <input type="text" placeholder="ім'я" name="first_name" id="id_first_name" required>
-            <input type="text" placeholder="призвіще" name="last_name" id="id_username" required>
-            <input type="email" placeholder="пошта" name="email" id="id_email">
-            <input type="text" placeholder="логін" name="username" id="id_username" required>
+            <input type="text" placeholder="Ім'я" name="first_name" id="id_first_name" required>
+            <input type="text" placeholder="Прізвище" name="last_name" id="id_username" required>
+            <input type="email" placeholder="Пошта" name="email" id="id_email">
+            <input type="text" placeholder="Логін" name="username" id="id_username" required>
             <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="050-424-1313" name="phone">
-            <input type="text" placeholder="адреса" name="address">
-            <input type="password" placeholder="пароль" name="password1" required>
-            <input type="password" placeholder="повторіть пароль" name="password2" required>
+            <input type="text" placeholder="Адреса" name="address">
+            <input type="password" placeholder="Пароль" name="password1" required>
+            <input type="password" placeholder="Повторіть пароль" name="password2" required>
             <button type="submit">зареєструватись</button>
         </form>
     </div>
