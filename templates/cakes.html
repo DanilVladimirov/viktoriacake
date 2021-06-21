@@ -51,6 +51,7 @@
                 data: {'csrfmiddlewaretoken': csrf_token, 'cakeid': cakeid},
                 dataType: 'json',
                 cache: false,
+
                 success: function (data) {
                     if (data.success) {
                         var id_btn = '#button_add_' + cakeid;
